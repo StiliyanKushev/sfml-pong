@@ -1,9 +1,12 @@
 #include <SFML/Graphics.hpp>
+#include "app.hpp"
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "CMake SFML Project" };
+    auto window = sf::RenderWindow{ { 800, 800 }, "Pong" };
     window.setFramerateLimit(144);
+
+    App::setup(window);
 
     while (window.isOpen())
     {
@@ -13,9 +16,14 @@ int main()
             {
                 window.close();
             }
+            else 
+            {
+                App::event(window, event);
+            }
         }
 
         window.clear();
+        App::draw(window);
         window.display();
     }
 }
