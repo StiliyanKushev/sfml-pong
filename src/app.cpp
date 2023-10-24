@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <array>
 #include "app.hpp"
 #include "platform.hpp"
 #include "ball.hpp"
@@ -7,7 +8,7 @@
 static std::unique_ptr<Platform> player;
 static std::unique_ptr<Platform> computer;
 static std::unique_ptr<Ball> ball;
-static std::vector<std::shared_ptr<Platform>> walls;
+static std::array<std::unique_ptr<Platform>, 2> walls;
 
 /**
  * Simply AI function to move the computer
@@ -46,17 +47,15 @@ void App::setup(sf::RenderWindow &window)
         WINDOW_SIZE.x/2,WINDOW_SIZE.y/2));
 
     // initiate the walls at top and bottom
-    auto top = std::make_shared<Platform>(
+    walls[0] = std::make_unique<Platform>(
         sf::Vector2f(0, 50));
-    top->size.x = WINDOW_SIZE.x;
-    top->size.y = 1;
-    walls.push_back(top);
+    walls[0]->size.x = WINDOW_SIZE.x;
+    walls[0]->size.y = 1;
     
-    auto bottom = std::make_shared<Platform>(
+    walls[1] = std::make_unique<Platform>(
         sf::Vector2f(0, WINDOW_SIZE.y-50));
-    bottom->size.x = WINDOW_SIZE.x;
-    bottom->size.y = 1;
-    walls.push_back(bottom);
+    walls[1]->size.x = WINDOW_SIZE.x;
+    walls[1]->size.y = 1;
 
     // give the ball an initial velocity to start the game
     ball->velocity.x = -Ball::SPEED_X;
